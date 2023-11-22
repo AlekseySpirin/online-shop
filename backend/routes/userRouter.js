@@ -1,11 +1,13 @@
-const Router = require('express')
-const router = new Router()
+const Router = require('express');
+const router = new Router();
+const {
+	registration,
+	login,
+	check
+} = require('../controllers/userController');
 
-router.post('/registration')
-router.post('/login')
-router.get('/auth', (req, res) => {
-	res.json({message: 'Work'})
-})
+router.post('/registration', registration);
+router.post('/login', login);
+router.get('/auth', check);
 
-
-module.exports  = router
+module.exports = router;
