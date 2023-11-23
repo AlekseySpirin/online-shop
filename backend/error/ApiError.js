@@ -6,8 +6,16 @@ class ApiError extends Error{
 		
 	}
 	
+	static unauthorizedError(message) {
+		return new ApiError(401, message)
+	}
+	
 	static badRequest(message) {
 		return new ApiError(404, message)
+	}
+	
+	static conflictError(message) {
+		return new ApiError(409, message)
 	}
 	
 	static internal(message) {
