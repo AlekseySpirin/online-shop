@@ -19,6 +19,9 @@ const User = sequelize.define('user', {
 	role: {
 		type: STRING,
 		defaultValue: 'USER'
+	},
+	name: {
+		type: STRING,
 	}
 	
 });
@@ -125,6 +128,13 @@ const TypeBrand = sequelize.define('type_brand', {
 		autoIncrement: true
 	},
 });
+
+User.beforeCreate((user, options) => {
+	if (!user.name) {
+		user.name = `Пользователь ${new Date()}`;
+	}
+});
+
 
 User.hasOne(Basket);
 Basket.belongsTo(User);
