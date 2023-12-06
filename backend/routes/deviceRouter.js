@@ -5,7 +5,8 @@ const {
 	create,
 	getAll
 } = require('../controllers/deviceController');
-router.post('/', create);
+const {checkRole} = require("../middleware/checkRoleMiddleware");
+router.post('/', checkRole('ADMIN'), create);
 router.get('/', getAll);
 router.get('/:id', getOne);
 

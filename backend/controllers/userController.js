@@ -10,22 +10,24 @@ class UserController {
 		const {
 			name,
 			email,
-			password
+			password,
+			role
 		} = req.body;
 		if (!email || !password) {
-			throw new ApiError.unauthorizedError("Не передан email или пароль");
+			throw ApiError.unauthorizedError("Не передан email или пароль");
 		}
 		
 		return await User.findOne({where: {email}})
 			.then((user) => {
 				if (user) {
-					throw new ApiError.conflictError("Пользователь уже существует");
+					throw ApiError.conflictError("Пользователь уже существует");
 				}
 				return bcrypt.hash(password, SALT_ROUNDS, function (err, hash) {
 					return User.create({
 						name,
 						email,
 						password: hash,
+						role
 					}).then((userData) => {
 						return res.status(201).send({
 							name: userData.name,
@@ -43,7 +45,7 @@ class UserController {
 			password
 		} = req.body;
 		if (!email || !password) {
-			throw new ApiError.unauthorizedError("Неправильный email или пароль");
+			throw ApiError.unauthorizedError("Неправильный email или пароль");
 		}
 		return await User.findOne({
 				where: {email},
@@ -51,7 +53,7 @@ class UserController {
 			})
 			.then((user) => {
 				if (!user) {
-					throw new ApiError.unauthorizedError("Такого пользователя не существует");
+					throw ApiError.unauthorizedError("Такого пользователя не существует");
 				}
 				return bcrypt.compare(password, user.password, (err, isPasswordMatch) => {
 					if (!isPasswordMatch) {
@@ -60,7 +62,7 @@ class UserController {
 					const token = generateToken(user.dataValues.id);
 					
 					res.cookie("jwt", token, {
-						maxAge: 6048000,
+						maxAge: 86400000,
 						httpOnly: true,
 						sameSite: "none",
 						secure: true,
