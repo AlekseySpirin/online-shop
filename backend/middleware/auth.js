@@ -3,6 +3,7 @@ const {
 	decryptToken
 } = require("../utils/jwt");
 const {User} = require("../models/models");
+const {badRequest} = require("../error/ApiError");
 // eslint-disable-next-line consistent-return
 const auth = (req, res, next) => {
 	const token = req.cookies.jwt;
@@ -15,9 +16,7 @@ const auth = (req, res, next) => {
 	User.findOne({where: {id: userId}})
 		.then((user) => {
 			if (!user) {
-				const error = new Error("Пользователь не найден");
-				error.statusCode = 404;
-				throw error;
+				throw badRequest('Пользователь не найден')
 			}
 			req.user = user;
 			next();
