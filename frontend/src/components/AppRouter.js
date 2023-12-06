@@ -35,7 +35,7 @@ const AppRouter = () => {
 			<Route path={SHOP_ROUTE} element={<Shop/>}/>
 			<Route path={LOGIN_ROUTE} element={<Auth/>}/>
 			<Route path={REGISTRATION_ROUTE} element={<Auth/>}/>
-			<Route path={DEVICE_ROUTE} element={<DevicePage/>}/>
+			<Route path={DEVICE_ROUTE + '/:id'} element={<DevicePage/>}/>
 		</Routes>
 	);
 };
